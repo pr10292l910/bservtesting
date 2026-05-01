@@ -8,6 +8,9 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
+# Crear machine-id requerido por BombSquad
+RUN echo "abcdef1234567890abcdef1234567890" > /etc/machine-id
+
 WORKDIR /app
 
 # Descargar servidor BombSquad 1.7.62
@@ -19,9 +22,9 @@ RUN wget https://files.ballistica.net/bombsquad/builds/BombSquad_Server_Linux_x8
 RUN curl -SsL https://github.com/playit-cloud/playit-agent/releases/download/v0.15.26/playit-linux-amd64 -o playit && \
     chmod +x playit
 
-# Dar permisos al servidor
 RUN chmod +x BombSquad_Server_Linux_x86_64_1.7.62/bombsquad_server
 
+EXPOSE 10000
 EXPOSE 43210/udp
 
 COPY start.sh /app/start.sh
