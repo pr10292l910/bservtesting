@@ -1,4 +1,4 @@
-FROM ubuntu:24.04
+FROM python:3.13-slim-bookworm
 
 ENV DEBIAN_FRONTEND=noninteractive
 
@@ -6,7 +6,6 @@ RUN apt-get update && apt-get install -y \
     wget \
     curl \
     ca-certificates \
-    python3.13 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
