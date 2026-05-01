@@ -1,16 +1,12 @@
-FROM ubuntu:22.04
+FROM ubuntu:24.04
 
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Instalar dependencias + Python 3.13
 RUN apt-get update && apt-get install -y \
     wget \
     curl \
     ca-certificates \
-    software-properties-common \
-    && add-apt-repository ppa:deadsnakes/ppa -y \
-    && apt-get update \
-    && apt-get install -y python3.13 \
+    python3.13 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
