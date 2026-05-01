@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 # Servidor HTTP mínimo en puerto 10000 para que Render no mate el proceso
 python3 -c "
 import http.server, threading
