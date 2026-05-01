@@ -1,12 +1,16 @@
 FROM ubuntu:22.04
 
-# Instalar dependencias
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Instalar dependencias + Python 3.13
 RUN apt-get update && apt-get install -y \
     wget \
     curl \
-    python3 \
-    python3.10 \
     ca-certificates \
+    software-properties-common \
+    && add-apt-repository ppa:deadsnakes/ppa -y \
+    && apt-get update \
+    && apt-get install -y python3.13 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
@@ -16,17 +20,15 @@ RUN wget https://files.ballistica.net/bombsquad/builds/BombSquad_Server_Linux_x8
     tar -xzf BombSquad_Server_Linux_x86_64_1.7.62.tar.gz && \
     rm BombSquad_Server_Linux_x86_64_1.7.62.tar.gz
 
-# Descargar playit-gg agent (tunnel para exponer el servidor sin abrir puertos)
+# Descargar playit-gg agent
 RUN curl -SsL https://github.com/playit-cloud/playit-agent/releases/download/v0.15.26/playit-linux-amd64 -o playit && \
     chmod +x playit
 
 # Dar permisos al servidor
 RUN chmod +x BombSquad_Server_Linux_x86_64_1.7.62/bombsquad_server
 
-# Puerto UDP de BombSquad
 EXPOSE 43210/udp
 
-# Script de inicio: lanza playit y el servidor juntos
 COPY start.sh /app/start.sh
 RUN chmod +x /app/start.sh
 
